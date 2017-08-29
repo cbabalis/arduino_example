@@ -93,6 +93,9 @@ void loop()
       Serial.println("\nPASSWORD VALID"); // print to the computer
       digitalWrite(led2, LOW);
       digitalWrite(led1, HIGH);
+      sms.beginSMS(senderNumber); // begin an sms to the sender number
+      sms.print(create_sms('h'));
+      sms.endSMS(); //send the sms
     }
     else {
       Serial.println("\nPASSWORD NOT VALID"); // print to the computer
@@ -115,11 +118,12 @@ void loop()
     sms.beginSMS(senderNumber); // begin an sms to the sender number
     sms.print(create_sms('g'));
     sms.endSMS(); //send the sms
+  }
   
   delay(1000); // delay
 }
 
-char create_sms(color) {
+char create_sms(char color) {
     char lat = (gps.location.lat(), 6);
     char lng = (gps.location.lng(), 6);
     char coords[25] = {lat, ",", lng, ",", color};
