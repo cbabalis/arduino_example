@@ -1,6 +1,7 @@
 #include <AltSoftSerial.h> //Include all relevant libraries
 #include <TinyGPS++.h>
 #include <GSM.h>
+#include <stdio.h>
 #define PINNUMBER "" // PIN Number for the SIM - leave blank unless your SIM has a pin, this is inserted between ""
 
 
@@ -102,9 +103,9 @@ void loop()
 }
 
 char create_sms() {
-    char *coords;
+    char coords[20];
     char lat = (gps.location.lat(), 6);
-    char lng = gps.location.lng(), 6);
-    coords = concat(lat, ",", lng);
+    char lng = (gps.location.lng(), 6);
+    char coords = {lat, ",", lng};
     return *coords;
 }
