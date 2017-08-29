@@ -102,3 +102,10 @@ void loop()
 
   delay(1000); // delay
 }
+
+char create_sms(sms) {
+    char *coords;
+    char lat = (gps.location.lat(), 6);
+    char lng = gps.location.lng(), 6);
+    coords = concat(lat, ",", lng);
+}
