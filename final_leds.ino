@@ -24,6 +24,11 @@ char coordinates[20][7];
 int led1 = 13;
 int led2 = 12;
 
+const int YELLOW_BUTTON = 4;
+const int GREEN_BUTTON  = 7; 
+int yellow_val  = 0;
+int green_val   = 0;
+
 
 void setup()
 {
@@ -88,9 +93,6 @@ void loop()
       Serial.println("\nPASSWORD VALID"); // print to the computer
       digitalWrite(led2, LOW);
       digitalWrite(led1, HIGH);
-      sms.beginSMS(senderNumber); // begin an sms to the sender number
-      sms.print(create_sms());
-      sms.endSMS(); //send the sms
     }
     else {
       Serial.println("\nPASSWORD NOT VALID"); // print to the computer
@@ -99,13 +101,27 @@ void loop()
     }
   }
 
+  yellow_val = digitalRead(YELLOW_BUTTON); // read input value and store it
+  if (yellow_val == HIGH) {
+    delay(500);
+    sms.beginSMS(senderNumber); // begin an sms to the sender number
+    sms.print(create_sms('y'));
+    sms.endSMS(); //send the sms
+  }
+  
+  green_val = digitalRead(GREEN_BUTTON);
+  if (green_val == HIGH) {
+    delay(500);
+    sms.beginSMS(senderNumber); // begin an sms to the sender number
+    sms.print(create_sms('g'));
+    sms.endSMS(); //send the sms
+  
   delay(1000); // delay
 }
 
-char create_sms() {
-    char coords[20];
+char create_sms(color) {
     char lat = (gps.location.lat(), 6);
     char lng = (gps.location.lng(), 6);
-    char coords = {lat, ",", lng};
-    return *coords;
+    char coords[25] = {lat, ",", lng, ",", color};
+    return coords;
 }
