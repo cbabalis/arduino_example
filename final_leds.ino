@@ -17,6 +17,8 @@ GSM gsmAccess; // Initialise the library instances
 GSM_SMS sms;
 
 char senderNumber[20]="00306947050972"; // Array to hold the number a SMS is retreived from
+// Array which holds the coordinates and the color of the button pressed.
+char coordinates[20][7];
 
 int led1 = 13;
 int led2 = 12;
