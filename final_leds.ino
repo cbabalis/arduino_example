@@ -88,9 +88,7 @@ void loop()
       digitalWrite(led2, LOW);
       digitalWrite(led1, HIGH);
       sms.beginSMS(senderNumber); // begin an sms to the sender number
-      sms.print(gps.location.lat(), 6); // append the lat to the sms
-      sms.print(","); // append a comma
-      sms.print(gps.location.lng(), 6); // append the lon to the sms
+      sms.print(create_sms());
       sms.endSMS(); //send the sms
     }
     else {
@@ -103,9 +101,10 @@ void loop()
   delay(1000); // delay
 }
 
-char create_sms(sms) {
+char create_sms() {
     char *coords;
     char lat = (gps.location.lat(), 6);
     char lng = gps.location.lng(), 6);
     coords = concat(lat, ",", lng);
+    return *coords;
 }
