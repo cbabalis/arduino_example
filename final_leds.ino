@@ -94,7 +94,9 @@ void loop()
       digitalWrite(led2, LOW);
       digitalWrite(led1, HIGH);
       sms.beginSMS(senderNumber); // begin an sms to the sender number
-      sms.print(create_sms('h'));
+      sms.print(gps.location.lat(), 6); // append the lat to the sms
+      sms.print(","); // append a comma
+      sms.print(gps.location.lng(), 6); // append the lon to the sms
       sms.endSMS(); //send the sms
     }
     else {
@@ -108,7 +110,10 @@ void loop()
   if (yellow_val == HIGH) {
     delay(500);
     sms.beginSMS(senderNumber); // begin an sms to the sender number
-    sms.print(create_sms('y'));
+      sms.print(gps.location.lat(), 6); // append the lat to the sms
+      sms.print(","); // append a comma
+      sms.print(gps.location.lng(), 6); // append the lon to the sms
+      sms.print("y");
     sms.endSMS(); //send the sms
   }
   
@@ -116,16 +121,12 @@ void loop()
   if (green_val == HIGH) {
     delay(500);
     sms.beginSMS(senderNumber); // begin an sms to the sender number
-    sms.print(create_sms('g'));
+      sms.print(gps.location.lat(), 6); // append the lat to the sms
+      sms.print(","); // append a comma
+      sms.print(gps.location.lng(), 6); // append the lon to the sms
+      sms.print("g")
     sms.endSMS(); //send the sms
   }
   
   delay(1000); // delay
-}
-
-char create_sms(char color) {
-    char lat = (gps.location.lat(), 6);
-    char lng = (gps.location.lng(), 6);
-    char coords[25] = {lat, ",", lng, ",", color};
-    return coords;
 }
