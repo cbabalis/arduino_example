@@ -65,7 +65,7 @@ void setup()
 void loop()
 {
   if (message.length() > max_chars) {
-    send_sms(message)
+    send_sms(message);
     }
   while (ss.available() > 0) //while there is stuff in the buffer
     if (gps.encode(ss.read())) //if it can successfully decode it, do it. Else try again when more charachters are in the buffer
