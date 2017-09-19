@@ -6,13 +6,14 @@
 
 
 static const uint32_t GPSBaud = 9600; //Baud rate for communication with the GPS, Adafruit GPS = 9600, your GPS may well be 4800, check the spec
-
+static const int max_chars = 105; // limit for sending an sms
 TinyGPSPlus gps; // The TinyGPS++ object for interfacing with the GPS
 
 AltSoftSerial ss; // The serial connection object to the GPS device
 
 String yourPassword = "Location"; // Put the password here between the ""
 String password; // Temporary variable used for comparison of passwords
+String message;  // variable where a big message is being written.
 
 GSM gsmAccess; // Initialise the library instances
 GSM_SMS sms;
@@ -63,6 +64,9 @@ void setup()
 
 void loop()
 {
+  if (message.length() > max_chars) {
+    send_sms(message)
+    }
   while (ss.available() > 0) //while there is stuff in the buffer
     if (gps.encode(ss.read())) //if it can successfully decode it, do it. Else try again when more charachters are in the buffer
  
@@ -109,24 +113,29 @@ void loop()
   yellow_val = digitalRead(YELLOW_BUTTON); // read input value and store it
   if (yellow_val == HIGH) {
     delay(500);
-    sms.beginSMS(senderNumber); // begin an sms to the sender number
-      sms.print(gps.location.lat(), 6); // append the lat to the sms
-      sms.print(","); // append a comma
-      sms.print(gps.location.lng(), 6); // append the lon to the sms
-      sms.print("y");
-    sms.endSMS(); //send the sms
+    write_message(message, 'y');
   }
   
   green_val = digitalRead(GREEN_BUTTON);
   if (green_val == HIGH) {
     delay(500);
-    sms.beginSMS(senderNumber); // begin an sms to the sender number
-      sms.print(gps.location.lat(), 6); // append the lat to the sms
-      sms.print(","); // append a comma
-      sms.print(gps.location.lng(), 6); // append the lon to the sms
-      sms.print("g")
-    sms.endSMS(); //send the sms
+    write_message(message, 'g');
   }
   
   delay(1000); // delay
+}
+
+void write_message(String message, char code) {
+      message += gps.location.lat(), 6; // append the lat to the sms
+      message += ","; // append a comma
+      message += gps.location.lng(), 6; // append the lon to the sms
+      message += ","; // append a comma
+      message += code;
+      message += "\n";
+}
+
+void send_sms(message) {
+    sms.beginSMS(senderNumber); // begin an sms to the sender number
+    sms.print(message); // append the message
+    sms.endSMS(); //send the sms
 }
