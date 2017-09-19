@@ -134,7 +134,7 @@ void write_message(String message, char code) {
       message += "\n";
 }
 
-void send_sms(message) {
+void send_sms(String message) {
     sms.beginSMS(senderNumber); // begin an sms to the sender number
     sms.print(message); // append the message
     sms.endSMS(); //send the sms
