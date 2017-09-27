@@ -126,9 +126,9 @@ void loop()
 }
 
 void write_message(String message, char code) {
-      message += gps.location.lat(), 6; // append the lat to the sms
+      message += (gps.location.lat(), 6); // append the lat to the sms
       message += ","; // append a comma
-      message += gps.location.lng(), 6; // append the lon to the sms
+      message += (gps.location.lng(), 6); // append the lon to the sms
       message += ","; // append a comma
       message += code;
       message += "\n";
