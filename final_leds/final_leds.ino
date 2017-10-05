@@ -1,3 +1,7 @@
+// Kwdikas 2: To GPS lamvanei sima kathws o kwdikas trexei synexws kai kathe 5 stigmata topothesias, to GSM stelnei ta dedomena se kinito tilefwno automata
+// Author: Iason-Stylianos Kasapleris
+// A.M.: 03112051 
+
 #include <AltSoftSerial.h> //Include all relevant libraries
 #include <TinyGPS++.h>
 #include <GSM.h>
@@ -19,13 +23,12 @@ GSM_SMS sms;
 
 char senderNumber[20]="00306947050972"; // Array to hold the number a SMS is retreived from
 // Array which holds the coordinates and the color of the button pressed.
-char coordinates[20][7];
 
 int led1 = 13;
 int led2 = 12;
 
-const int YELLOW_BUTTON = 4;
-const int GREEN_BUTTON  = 7; 
+const int GREEN_BUTTON = 4;
+const int YELLOW_BUTTON  = 7; 
 int yellow_val  = 0;
 int green_val   = 0;
 String txtmsg = "";
@@ -105,25 +108,19 @@ void loop()
       digitalWrite(led2, HIGH);
     }
   }
-
-  yellow_val = digitalRead(YELLOW_BUTTON); // read input value and store it
-  if (yellow_val == HIGH) {
-    delay(500);
-    sms.beginSMS(senderNumber); // begin an sms to the sender number
-    txtmsg += (gps.location.lat(), 6);
+    delay(5000);
+    txtmsg += String(gps.location.lat(), 6);
     txtmsg += ",";
-    txtmsg += (gps.location.lng(), 6);
-    txtmsg +="y\n";
+    txtmsg += String(gps.location.lng(), 6);
+    txtmsg += "\n";
     Serial.println(txtmsg);
-    sms.print(txtmsg);
-   sms.endSMS(); //send the sms
-   txtmsg = "";
-  }
+    if (txtmsg.length() > 120) {
+        sms.beginSMS(senderNumber);
+        sms.print(txtmsg);
+        //sms.endSMS();
+        txtmsg = "";
+        Serial.println("midenistike");
+        }
   
-  green_val = digitalRead(GREEN_BUTTON);
-  if (green_val == HIGH) {
-    delay(500);
-  }
-  
-  delay(1000); // delay
+ delay(1000); // delay
 }
